@@ -95,5 +95,25 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
 //add your solution here!
+  const unsigned int n = static_cast<unsigned int>(board.size());
+  if(r>=n || c>=n)return false;
 
+  word.push_back(board[r][c]);
+  bool isWord = (dict.find(word)!=dict.end());
+  bool isPrefix = (prefix.find(word)!=prefix.end());
+
+  bool foundLonger = false;
+
+  if(isPrefix){
+    unsigned int nr = r + static_cast<unsigned int>(dr); 
+    unsigned int nc = c + static_cast<unsigned int>(dc);
+    if(nr < n && nc <n){
+      foundLonger = boggleHelper(dict,prefix,board,word,result,nr,nc,dr,dc);
+    }
+  }
+  if(!foundLonger&&isWord){
+    result.insert(word);
+    return true;
+  }
+  return foundLonger;
 }
